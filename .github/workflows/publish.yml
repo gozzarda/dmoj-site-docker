@@ -1,5 +1,10 @@
 name: Publish Docker
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 * * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,8 +15,8 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: uwapcs/dmoj-site
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        snapshot: true
-        tag_names: true
+        name: gozzarda/dmoj-site-docker/dmoj-site
+        username: unused
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        cache: ${{ github.event_name != 'schedule' }}
